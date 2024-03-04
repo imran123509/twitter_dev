@@ -1,14 +1,12 @@
-const User=require('../models/tweet');
+const HashTag=require('../models/hashtags');
 
-class CrudRepository {
-    constructor(model){
-        this.model=model
-    }
+class HashTagRepository {
+    
 
     async create(data){
           try {
             console.log(data);
-             const result=await User.create(data);
+             const result=await HashTag.create(data);
              return result;
           } catch (error) {
               console.log('something went wrong in crud repo');
@@ -16,10 +14,18 @@ class CrudRepository {
           }
     }
 
+    async bulkCreate(data){
+         try {
+            const tags=await HashTag.insertMany(data)
+         } catch (error) {
+            console.log(error);
+         }
+    }
+
     async destory(id){
         try {
-            const result=await this.model.findByIdAndDelete(id);
-            return result;
+            const response=await HashTag(id);
+            return response;
         } catch (error) {
             console.log('something went wrong with the crud repo');
             throw error;
@@ -27,8 +33,8 @@ class CrudRepository {
     }
     async get(id){
           try {
-        const result=await this.model.findById(id);
-        return result
+        const tag=await HashTag(id);
+        return tag
           } catch (error) {
             console.log('something went wrong with the crud repo');
             throw error;
@@ -37,7 +43,7 @@ class CrudRepository {
 
     async getAll(){
         try {
-           const result=await this.model.find({});
+           const result=await HashTag.find({});
            return result; 
         } catch (error) {
             console.log('something went wrong with the crud repo');
@@ -53,6 +59,18 @@ class CrudRepository {
             throw error;
         }
     }
+
+    async findByName(titleList){
+        try {
+            const tag=await HashTag.find({
+                title:titleList
+            }).select('title -id');
+            return tag
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
 }
 
-module.exports=CrudRepository;
+module.exports=HashTagRepository

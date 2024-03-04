@@ -1,6 +1,7 @@
 const TweetRepository=require('./tweet-repository');
+const HashTagRepository=require('./hashtag-repository')
 
-
-export {
-    TweetRepository
+module.exports= {
+    TweetRepository,
+    HashTagRepository
 }
